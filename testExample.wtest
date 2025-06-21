@@ -1,9 +1,29 @@
-import example.pepita
+import example.*
 
-describe "group of tests for pepita" {
+describe "group of tests for mutual" {
+  const trekking1 = new SalidaDeTrekking(km=100, diasDeSol=130, idiomas= #{"portugues"})
+  const playa1 = new ViajeDePlaya(largo=1000, idiomas=#{"jeringozo"})
+  const playa2 = new ViajeDePlaya(largo=2000, idiomas=#{"esperanto"})
+  const gim1 = new ClaseGimnasia() 
+  const roque = new SocioRelajado(maxActs=2, edad=30, idiomas= #{"ingles"}, acts= [])
 
-  test "pepita has initial energy" {
-    assert.equals(100, pepita.energy())
+  method initialize() {
+    roque.registrarAct(playa1)
+    roque.registrarAct(playa2)
   }
 
+  test "trek1 lleva 2 días, implica esfuerzo, y no sirve para broncearse." {
+    assert.equals(2, trekking1.dias())
+    assert.that(trekking1.implicaEsfuerzo())
+    assert.notThat(trekking1.sirveParaBroncearse())
+  }
+  test "roque adora el sol" {
+    assert.that(roque.esAdoradordelSol())
+  }
+  test "las acts esforzadas son solo el viaje de 2000 mts" {
+    assert.equals([playa2], roque.actsEsforzadas())
+  }
+  test "roque no puede hacer gim porque supera las acts maximas" {
+    assert.throwsExceptionWithMessage("el socio supero el maximo de acts", {roque.registrarActividad(gim1)})
+  }
 }
